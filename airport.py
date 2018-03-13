@@ -41,9 +41,9 @@ def insert_stuff():
     csv_data = csv.reader(f)
 
     for row in csv_data:
-        if row[0]!= 'iata':
+        if row[0]!= "iata":
             insertion = (row[0], row[1], row[2], row[3],row[4], row[5], row[6], row[7])
-            statement = 'INSERT INTO "Airports" '
+            statement = 'INSERT OR IGNORE INTO "Airports" '
             statement += 'VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
             cur.execute(statement, insertion)
 
@@ -58,3 +58,18 @@ if len(sys.argv) > 1 and sys.argv[1] == '--init':
 else:
     print('Leaving the DB alone.')
     insert_stuff()
+
+
+
+conn = sqlite3.connect('airports.sqlite')
+cur = conn.cursor()
+
+statement1 = '''
+SELECT *
+FROM Airports
+WHERE Iata = 'DTW'
+'''
+cur.execute(statement1)
+print("--------------- DATA for DTW ---------------")
+for row in cur:
+    print(row)
