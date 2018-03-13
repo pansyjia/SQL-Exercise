@@ -17,12 +17,12 @@ def init_db():
     CREATE TABLE 'Airports' (
         'Iata' TEXT PRIMARY KEY,
         'Airport' TEXT NOT NULL,
-        'City' TEXT NOT NULL,
-        'State' TEXT NOT NULL,
-        'Country' TEXT NOT NULL,
-        'Lat' INTEGER NOT NULL,
-        'Long'INTEGER NOT NULL,
-        'Cnt'INTEGER NOT NULL
+        'City' TEXT,
+        'State' TEXT,
+        'Country' TEXT,
+        'Lat' INTEGER,
+        'Long'INTEGER,
+        'Cnt'INTEGER
         );
     '''
 
@@ -41,12 +41,11 @@ def insert_stuff():
     csv_data = csv.reader(f)
 
     for row in csv_data:
-        if row[0]!="iata":
-            insertion = (None, row[0], row[1], row[2], row[3],row[4], row[5], row[6], row[7])
+        if row[0]!= 'iata':
+            insertion = (row[0], row[1], row[2], row[3],row[4], row[5], row[6], row[7])
             statement = 'INSERT INTO "Airports" '
-            statement += 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-
-        cur.execute(statement, insertion)
+            statement += 'VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+            cur.execute(statement, insertion)
 
 
     conn.commit()
